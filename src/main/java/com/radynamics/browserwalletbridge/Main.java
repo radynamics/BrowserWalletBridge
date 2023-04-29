@@ -3,7 +3,6 @@ package com.radynamics.browserwalletbridge;
 import com.radynamics.browserwalletbridge.gemwallet.GemWallet;
 import com.radynamics.browserwalletbridge.httpserver.BridgeEventListener;
 import com.radynamics.browserwalletbridge.httpserver.EmbeddedServer;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -29,13 +28,13 @@ public class Main {
         t.ccy = "XRP";
         t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
 
-        var future = server.sendPayment(t, PayloadConverter.toJson(t));
+        var future = server.sendPayment(t, com.radynamics.browserwalletbridge.gemwallet.PayloadConverter.toJson(t));
 
         future.join();
         server.stopHttpServer();
     }
 
-    private static class Transaction implements com.radynamics.browserwalletbridge.httpserver.Transaction {
+    public static class Transaction implements com.radynamics.browserwalletbridge.httpserver.Transaction {
         public double amount;
         public String ccy;
         public String destination;
@@ -48,18 +47,6 @@ public class Main {
         @Override
         public String getCcy() {
             return ccy;
-        }
-    }
-
-    private static class PayloadConverter {
-        public static JSONObject toJson(Transaction t) {
-            if (t == null) throw new IllegalArgumentException("Parameter 't' cannot be null");
-
-            var json = new JSONObject();
-            json.put("amount", t.amount);
-            json.put("destination", t.destination);
-
-            return json;
         }
     }
 }
