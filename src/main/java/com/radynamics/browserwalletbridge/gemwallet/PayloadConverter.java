@@ -9,6 +9,10 @@ public class PayloadConverter {
 
         var json = new JSONObject();
         json.put("amount", t.amount);
+        if (!t.ccy.equals("XRP")) {
+            json.put("currency", t.ccy);
+            json.put("issuer", t.ccyIssuer);
+        }
         json.put("destination", t.destination);
 
         return json;

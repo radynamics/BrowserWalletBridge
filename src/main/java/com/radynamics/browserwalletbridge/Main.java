@@ -38,6 +38,7 @@ public class Main {
         public double amount;
         public String ccy;
         public String destination;
+        public String ccyIssuer;
 
         @Override
         public double getAmount() {
