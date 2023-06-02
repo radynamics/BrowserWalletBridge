@@ -9,6 +9,11 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException, BridgeException {
         var walletApi = new GemWallet();
+        var t = new Transaction();
+        t.amount = 1.23;
+        t.ccy = "XRP";
+        t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
+
         var server = new EmbeddedServer(walletApi);
         server.addBridgeEventListener(new BridgeEventListener() {
             @Override
@@ -23,12 +28,7 @@ public class Main {
         });
         server.start();
 
-        var t = new Transaction();
-        t.amount = 1.23;
-        t.ccy = "XRP";
-        t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
-
-        var future = server.sendPayment(t, com.radynamics.browserwalletbridge.gemwallet.PayloadConverter.toJson(t));
+        var future = server.sendPayment(t, walletApi.createPayloadConverter().toJson(t));
 
         future.join();
         server.stopHttpServer();

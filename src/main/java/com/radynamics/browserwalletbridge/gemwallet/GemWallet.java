@@ -7,4 +7,9 @@ public class GemWallet implements BrowserApi {
     public String getContentRoot() {
         return "gemwallet";
     }
+
+    @Override
+    public PayloadConverter createPayloadConverter() {
+        return new PayloadConverter();
+    }
 }
