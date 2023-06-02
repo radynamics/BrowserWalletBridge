@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:;base64,=">
+    <title>MetaMask</title>
+    <script src="https://www.unpkg.com/browse/web3@3.0.0-rc.5/dist/web3.min.js"></script>
+    <script type="text/javascript" src="/send/common/walletbridge.js"></script>
+    <link rel="stylesheet" href="/send/common/main.css">
+</head>
+<body>
+</body>
+
+<script type="text/JavaScript">
+
+function onLoad() {
+    var bridge = new WalletBridge('MetaMask', 'https://metamask.io')
+    if(!bridge.init()) {
+        return
+    }
+
+    ethereum
+    .request({ method: 'eth_requestAccounts' })
+    .then((accounts) => {
+        return ethereum.request({
+            method: 'eth_sendTransaction',
+                params: [{
+                    from: accounts[0],
+                    to: bridge._tx.destination,
+                    value: Number(bridge._tx.amount).toString(16), // amount in wei
+                    //data: '0xdf'
+                },
+            ],
+        })
+    })
+    .then((transactionHash) => {
+        bridge.success(transactionHash)
+    })
+    .catch((error) => {
+        bridge.hide('waiting')
+        if (error.code === 4001) {
+            bridge.reject()
+        } else {
+            bridge.show('walletApiNotAvailable')
+        }
+    });
+}
+
+window.addEventListener("load", onLoad)
+
+</script>
+</html>
