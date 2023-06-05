@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="icon" href="data:;base64,=">
     <title>MetaMask</title>
-    <script src="https://www.unpkg.com/browse/web3@3.0.0-rc.5/dist/web3.min.js"></script>
+    <script src="https://unpkg.com/web3@1.10.0/dist/web3.min.js"></script>
     <script type="text/javascript" src="/send/common/walletbridge.js"></script>
     <link rel="stylesheet" href="/send/common/main.css">
 </head>
@@ -22,21 +22,36 @@ function onLoad() {
     ethereum
     .request({ method: 'eth_requestAccounts' })
     .then((accounts) => {
+        const web3 = new Web3();
+        var params = null
+        if(bridge._ccy == 'ETH') {
+            params = {
+                from: accounts[0],
+                to: bridge._tx.destination,
+                value: web3.utils.toBN(bridge._tx.amount).toString(16), // amount in wei
+            }
+        } else {
+            const TRANSFER_FUNCTION_ABI = {"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"};
+            params = {
+                from: accounts[0],
+                to: bridge._tx.issuer,
+                data: web3.eth.abi.encodeFunctionCall(TRANSFER_FUNCTION_ABI, [
+                    bridge._tx.destination,
+                    web3.utils.toBN(bridge._tx.amount)
+                ]),
+            }
+        }
+
         return ethereum.request({
             method: 'eth_sendTransaction',
-                params: [{
-                    from: accounts[0],
-                    to: bridge._tx.destination,
-                    value: Number(bridge._tx.amount).toString(16), // amount in wei
-                    //data: '0xdf'
-                },
-            ],
+            params: [ params ],
         })
     })
     .then((transactionHash) => {
         bridge.success(transactionHash)
     })
     .catch((error) => {
+        console.error(error)
         bridge.hide('waiting')
         if (error.code === 4001) {
             bridge.reject()

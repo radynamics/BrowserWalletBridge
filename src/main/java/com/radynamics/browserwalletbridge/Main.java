@@ -15,11 +15,15 @@ public class Main {
         t.ccy = "XRP";
         t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";*/
 
-        // Example sending ETH using MetaMask
+        // Example sending with Ethereum using MetaMask
         var walletApi = new MetaMask();
         var t = new Transaction();
         t.amount = 1.23;
+        // a) send ETH
         t.ccy = "ETH";
+        // b) send ERC20 token
+        //t.ccy = "LINK";
+        //t.ccyIssuer = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"; // Contract address
         t.destination = "0x7C94907F2EBe8797C81c1BD30b534BA985773dFD";
 
         var server = new EmbeddedServer(walletApi);

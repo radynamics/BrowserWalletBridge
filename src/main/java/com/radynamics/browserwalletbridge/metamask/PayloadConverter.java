@@ -12,16 +12,16 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
 
         var json = new JSONObject();
         if (!t.ccy.equals("ETH")) {
-            throw new IllegalArgumentException("ccy must be 'ETH'");
+            json.put("issuer", t.ccyIssuer);
         }
-        json.put("amount", ethToWei(t.amount));
+        json.put("amount", toWei(t.amount));
         json.put("destination", t.destination);
 
         return json;
     }
 
-    private BigInteger ethToWei(Double amount) {
-        var weiFactor = BigDecimal.TEN.pow(18);
-        return BigDecimal.valueOf(amount).multiply(weiFactor).toBigInteger();
+    private BigInteger toWei(Double amount) {
+        var factor = BigDecimal.TEN.pow(18);
+        return BigDecimal.valueOf(amount).multiply(factor).toBigInteger();
     }
 }
