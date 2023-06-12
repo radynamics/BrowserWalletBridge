@@ -3,6 +3,7 @@ This Java project lets a user sign cryptocurrency transactions with a browser wa
 
 Currently implemented Wallets are:
 - [XRPL] [GemWallet](https://gemwallet.app)
+- [Ethereum] [MetaMask](https://metamask.io)
 
 ### Steps to use this code
 See Main.java for a simple example.
