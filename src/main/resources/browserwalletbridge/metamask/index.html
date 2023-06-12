@@ -19,6 +19,12 @@ function onLoad() {
         return
     }
 
+    if(typeof window.ethereum === 'undefined') {
+        bridge.hide('waiting')
+        bridge.show('walletApiNotAvailable')
+        return
+    }
+
     ethereum
     .request({ method: 'eth_requestAccounts' })
     .then((accounts) => {
