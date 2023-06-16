@@ -11,11 +11,18 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         if (t == null) throw new IllegalArgumentException("Parameter 't' cannot be null");
 
         var json = new JSONObject();
-        if (!t.ccy.equals("ETH")) {
+        var isEth = t.ccy.equals("ETH");
+        if (!isEth) {
             json.put("issuer", t.ccyIssuer);
         }
         json.put("amount", toWei(t.amount));
         json.put("destination", t.destination);
+        if (t.hasMemo()) {
+            if (!isEth) {
+                throw new IllegalArgumentException("Memos are only available for transactions in ETH. ERC20 payments don't support payloads.");
+            }
+            json.put("memo", t.memo);
+        }
 
         return json;
     }

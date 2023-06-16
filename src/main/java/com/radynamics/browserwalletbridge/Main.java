@@ -25,6 +25,7 @@ public class Main {
         //t.ccy = "LINK";
         //t.ccyIssuer = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"; // Contract address
         t.destination = "0x7C94907F2EBe8797C81c1BD30b534BA985773dFD";
+        t.memo = "test";
 
         var server = new EmbeddedServer(walletApi);
         server.addBridgeEventListener(new BridgeEventListener() {
@@ -49,8 +50,13 @@ public class Main {
     public static class Transaction implements com.radynamics.browserwalletbridge.httpserver.Transaction {
         public double amount;
         public String ccy;
-        public String destination;
         public String ccyIssuer;
+        public String destination;
+        public String memo;
+
+        public boolean hasMemo() {
+            return memo != null && memo.length() > 0;
+        }
 
         @Override
         public double getAmount() {
