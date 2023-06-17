@@ -1,28 +1,29 @@
 package com.radynamics.browserwalletbridge;
 
+import com.radynamics.browserwalletbridge.gemwallet.GemWallet;
 import com.radynamics.browserwalletbridge.httpserver.BridgeEventListener;
 import com.radynamics.browserwalletbridge.httpserver.EmbeddedServer;
-import com.radynamics.browserwalletbridge.metamask.MetaMask;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException, BridgeException {
         // Example sending XRP using GemWallet
-        /*var walletApi = new GemWallet();
+        var walletApi = new GemWallet();
         var t = new Transaction();
         t.setAmount(1.23, "XRP");
-        t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";*/
+        //t.setAmount(1.23, "USD", "r4u18ao5NTd8nQo9LMEpkbmpRwsJ4vZeua");
+        t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
 
         // Example sending with Ethereum using MetaMask
-        var walletApi = new MetaMask();
+        /*var walletApi = new MetaMask();
         var t = new Transaction();
         // a) send ETH
         t.setAmount(1.23, "ETH");
         // b) send ERC20 token
         //t.setAmount(1.23, "LINK", "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"); // Contract address
         t.destination = "0x7C94907F2EBe8797C81c1BD30b534BA985773dFD";
-        t.memo = "test";
+        t.memo = "test";*/
 
         var server = new EmbeddedServer(walletApi);
         server.addBridgeEventListener(new BridgeEventListener() {
