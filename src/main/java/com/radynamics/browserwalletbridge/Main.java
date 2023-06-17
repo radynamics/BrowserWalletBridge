@@ -14,6 +14,7 @@ public class Main {
         t.setAmount(1.23, "XRP");
         //t.setAmount(1.23, "USD", "r4u18ao5NTd8nQo9LMEpkbmpRwsJ4vZeua");
         t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
+        t.destinationTag = 123456;
 
         // Example sending with Ethereum using MetaMask
         /*var walletApi = new MetaMask();
@@ -50,6 +51,7 @@ public class Main {
         private String ccy;
         private String ccyIssuer;
         public String destination;
+        public int destinationTag;
         public String memo;
 
         public boolean hasMemo() {
