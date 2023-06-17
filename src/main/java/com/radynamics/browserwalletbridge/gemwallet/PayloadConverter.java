@@ -1,7 +1,11 @@
 package com.radynamics.browserwalletbridge.gemwallet;
 
 import com.radynamics.browserwalletbridge.Main;
+import org.apache.commons.codec.binary.Hex;
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
 
 public class PayloadConverter implements com.radynamics.browserwalletbridge.PayloadConverter {
     public JSONObject toJson(Main.Transaction t) {
@@ -22,9 +26,8 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         if (t.networkFee != null) {
             json.put("fee", t.networkFee);
         }
-
         if (t.hasMemo()) {
-            throw new IllegalArgumentException("Memos are currently not supported by GemWallet.");
+            json.put("memos", toJsonMemo(t));
         }
 
         return json;
@@ -33,5 +36,20 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
     private static Long xrpToDrops(Double amount) {
         final int DROPS_PER_XRP = 1000000;
         return Double.valueOf(amount * DROPS_PER_XRP).longValue();
+    }
+
+    private static JSONArray toJsonMemo(Main.Transaction t) {
+        var memosArray = new JSONArray();
+        var memos = new JSONObject();
+        memosArray.put(memos);
+        var memo = new JSONObject();
+        memos.put("memo", memo);
+        memo.put("memoType", t.getMemoType() == null ? null : toHex(t.getMemoType()));
+        memo.put("memoData", t.getMemo() == null ? null : toHex(t.getMemo()));
+        return memosArray;
+    }
+
+    private static String toHex(String plain) {
+        return new String(Hex.encodeHex(plain.getBytes(StandardCharsets.UTF_8)));
     }
 }

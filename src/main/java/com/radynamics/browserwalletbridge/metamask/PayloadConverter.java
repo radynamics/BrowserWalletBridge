@@ -21,7 +21,7 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
             if (!isEth) {
                 throw new IllegalArgumentException("Memos are only available for transactions in ETH. ERC20 payments don't support payloads.");
             }
-            json.put("memo", t.memo);
+            json.put("memo", t.getMemo());
         }
 
         return json;

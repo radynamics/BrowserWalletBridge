@@ -16,6 +16,7 @@ public class Main {
         t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
         t.destinationTag = 123456; // optional
         //t.networkFee = 13; // in drops, optional
+        t.setMemo("{ \"data\": \"value 123\", \"price\": 1.23 }", "json");  // optional
 
         // Example sending with Ethereum using MetaMask
         /*var walletApi = new MetaMask();
@@ -25,7 +26,7 @@ public class Main {
         // b) send ERC20 token
         //t.setAmount(1.23, "LINK", "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"); // Contract address
         t.destination = "0x7C94907F2EBe8797C81c1BD30b534BA985773dFD";
-        t.memo = "test";*/
+        t.setMemo("test");*/
 
         var server = new EmbeddedServer(walletApi);
         server.addBridgeEventListener(new BridgeEventListener() {
@@ -53,7 +54,8 @@ public class Main {
         private String ccyIssuer;
         public String destination;
         public Integer destinationTag;
-        public String memo;
+        private String memo;
+        private String memoType;
         public Integer networkFee;
 
         public boolean hasMemo() {
@@ -82,6 +84,23 @@ public class Main {
 
         public String getCcyIssuer() {
             return ccyIssuer;
+        }
+
+        public void setMemo(String memo) {
+            setMemo(memo, null);
+        }
+
+        public void setMemo(String memo, String memoType) {
+            this.memo = memo;
+            this.memoType = memoType;
+        }
+
+        public String getMemo() {
+            return memo;
+        }
+
+        public String getMemoType() {
+            return memoType;
         }
     }
 }
