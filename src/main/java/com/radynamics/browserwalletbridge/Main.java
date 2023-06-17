@@ -14,7 +14,8 @@ public class Main {
         t.setAmount(1.23, "XRP");
         //t.setAmount(1.23, "USD", "r4u18ao5NTd8nQo9LMEpkbmpRwsJ4vZeua");
         t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
-        t.destinationTag = 123456;
+        t.destinationTag = 123456; // optional
+        //t.networkFee = 13; // in drops, optional
 
         // Example sending with Ethereum using MetaMask
         /*var walletApi = new MetaMask();
@@ -53,6 +54,7 @@ public class Main {
         public String destination;
         public Integer destinationTag;
         public String memo;
+        public Integer networkFee;
 
         public boolean hasMemo() {
             return memo != null && memo.length() > 0;
