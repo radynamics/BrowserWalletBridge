@@ -11,19 +11,16 @@ public class Main {
         // Example sending XRP using GemWallet
         /*var walletApi = new GemWallet();
         var t = new Transaction();
-        t.amount = 1.23;
-        t.ccy = "XRP";
+        t.setAmount(1.23, "XRP");
         t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";*/
 
         // Example sending with Ethereum using MetaMask
         var walletApi = new MetaMask();
         var t = new Transaction();
-        t.amount = 1.23;
         // a) send ETH
-        t.ccy = "ETH";
+        t.setAmount(1.23, "ETH");
         // b) send ERC20 token
-        //t.ccy = "LINK";
-        //t.ccyIssuer = "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"; // Contract address
+        //t.setAmount(1.23, "LINK", "0x326C977E6efc84E512bB9C30f76E30c160eD06FB"); // Contract address
         t.destination = "0x7C94907F2EBe8797C81c1BD30b534BA985773dFD";
         t.memo = "test";
 
@@ -48,14 +45,24 @@ public class Main {
     }
 
     public static class Transaction implements com.radynamics.browserwalletbridge.httpserver.Transaction {
-        public double amount;
-        public String ccy;
-        public String ccyIssuer;
+        private double amount;
+        private String ccy;
+        private String ccyIssuer;
         public String destination;
         public String memo;
 
         public boolean hasMemo() {
             return memo != null && memo.length() > 0;
+        }
+
+        public void setAmount(double amount, String ccy) {
+            setAmount(amount, ccy, null);
+        }
+
+        public void setAmount(double amount, String ccy, String ccyIssuer) {
+            this.amount = amount;
+            this.ccy = ccy;
+            this.ccyIssuer = ccyIssuer;
         }
 
         @Override
@@ -66,6 +73,10 @@ public class Main {
         @Override
         public String getCcy() {
             return ccy;
+        }
+
+        public String getCcyIssuer() {
+            return ccyIssuer;
         }
     }
 }

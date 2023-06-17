@@ -11,11 +11,11 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         if (t == null) throw new IllegalArgumentException("Parameter 't' cannot be null");
 
         var json = new JSONObject();
-        var isEth = t.ccy.equals("ETH");
+        var isEth = t.getCcy().equals("ETH");
         if (!isEth) {
-            json.put("issuer", t.ccyIssuer);
+            json.put("issuer", t.getCcyIssuer());
         }
-        json.put("amount", toWei(t.amount));
+        json.put("amount", toWei(t.getAmount()));
         json.put("destination", t.destination);
         if (t.hasMemo()) {
             if (!isEth) {
