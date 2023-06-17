@@ -8,8 +8,10 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         if (t == null) throw new IllegalArgumentException("Parameter 't' cannot be null");
 
         var json = new JSONObject();
-        json.put("amount", t.getAmount());
-        if (!t.getCcy().equals("XRP")) {
+        if (t.getCcy().equals("XRP")) {
+            json.put("amount", xrpToDrops(t.getAmount()));
+        } else {
+            json.put("amount", t.getAmount());
             json.put("currency", t.getCcy());
             json.put("issuer", t.getCcyIssuer());
         }
@@ -26,5 +28,10 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         }
 
         return json;
+    }
+
+    private Long xrpToDrops(Double amount) {
+        final int DROPS_PER_XRP = 1000000;
+        return Double.valueOf(amount * DROPS_PER_XRP).longValue();
     }
 }
