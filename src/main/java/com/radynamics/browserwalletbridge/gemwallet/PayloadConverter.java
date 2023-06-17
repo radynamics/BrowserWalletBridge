@@ -30,7 +30,7 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         return json;
     }
 
-    private Long xrpToDrops(Double amount) {
+    private static Long xrpToDrops(Double amount) {
         final int DROPS_PER_XRP = 1000000;
         return Double.valueOf(amount * DROPS_PER_XRP).longValue();
     }
