@@ -51,7 +51,7 @@ public class Main {
         private String ccy;
         private String ccyIssuer;
         public String destination;
-        public int destinationTag;
+        public Integer destinationTag;
         public String memo;
 
         public boolean hasMemo() {

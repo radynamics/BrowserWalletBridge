@@ -14,7 +14,9 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
             json.put("issuer", t.getCcyIssuer());
         }
         json.put("destination", t.destination);
-        json.put("destinationTag", t.destinationTag);
+        if (t.destinationTag != null) {
+            json.put("destinationTag", t.destinationTag);
+        }
 
         if (t.hasMemo()) {
             throw new IllegalArgumentException("Memos are currently not supported by GemWallet.");
