@@ -40,6 +40,7 @@ class WalletBridge {
     }
 
     init() {
+        document.title = this._displayName
         document.body.innerHTML = this.createBodyHtml()
         document.getElementById("cancel").addEventListener("click", this.cancel, false);
         document.getElementById("copy").addEventListener("click", this.copyUrlToClipboard, false);
