@@ -1,11 +1,9 @@
 package com.radynamics.browserwalletbridge.gemwallet;
 
 import com.radynamics.browserwalletbridge.Main;
-import org.apache.commons.codec.binary.Hex;
+import com.radynamics.browserwalletbridge.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.nio.charset.StandardCharsets;
 
 public class PayloadConverter implements com.radynamics.browserwalletbridge.PayloadConverter {
     public JSONObject toJson(Main.Transaction t) {
@@ -13,7 +11,7 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
 
         var json = new JSONObject();
         if (t.getCcy().equals("XRP")) {
-            json.put("amount", xrpToDrops(t.getAmount()));
+            json.put("amount", Utils.xrplXrpToDrops(t.getAmount()));
         } else {
             json.put("amount", t.getAmount());
             json.put("currency", t.getCcy());
@@ -33,23 +31,14 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         return json;
     }
 
-    private static Long xrpToDrops(Double amount) {
-        final int DROPS_PER_XRP = 1000000;
-        return Double.valueOf(amount * DROPS_PER_XRP).longValue();
-    }
-
     private static JSONArray toJsonMemo(Main.Transaction t) {
         var memosArray = new JSONArray();
         var memos = new JSONObject();
         memosArray.put(memos);
         var memo = new JSONObject();
         memos.put("memo", memo);
-        memo.put("memoType", t.getMemoType() == null ? null : toHex(t.getMemoType()));
-        memo.put("memoData", t.getMemo() == null ? null : toHex(t.getMemo()));
+        memo.put("memoType", t.getMemoType() == null ? null : Utils.toHex(t.getMemoType()));
+        memo.put("memoData", t.getMemo() == null ? null : Utils.toHex(t.getMemo()));
         return memosArray;
-    }
-
-    private static String toHex(String plain) {
-        return new String(Hex.encodeHex(plain.getBytes(StandardCharsets.UTF_8)));
     }
 }
