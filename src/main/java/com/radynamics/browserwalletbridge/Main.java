@@ -1,6 +1,6 @@
 package com.radynamics.browserwalletbridge;
 
-import com.radynamics.browserwalletbridge.gemwallet.GemWallet;
+import com.radynamics.browserwalletbridge.crossmark.Crossmark;
 import com.radynamics.browserwalletbridge.httpserver.BridgeEventListener;
 import com.radynamics.browserwalletbridge.httpserver.EmbeddedServer;
 
@@ -9,13 +9,24 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) throws IOException, BridgeException {
         // Example sending XRP using GemWallet
-        var walletApi = new GemWallet();
+        /*var walletApi = new GemWallet();
         var t = new Transaction();
         t.setAmount(1.23, "XRP");
         //t.setAmount(1.23, "USD", "r4u18ao5NTd8nQo9LMEpkbmpRwsJ4vZeua");
         t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
         t.destinationTag = 123456; // optional
         //t.networkFee = 13; // in drops, optional
+        t.setMemo("{ \"data\": \"value 123\", \"price\": 1.23 }", "json");  // optional*/
+
+        // Example sending XRP using Crossmark
+        var walletApi = new Crossmark();
+        var t = new Transaction();
+        t.sender = "rwYb1M4hZcSG6tcAuhvgEwSpsiACKv6BG8";
+        t.setAmount(1.23, "XRP");
+        //t.setAmount(1.23, "USD", "r4u18ao5NTd8nQo9LMEpkbmpRwsJ4vZeua");
+        t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
+        t.destinationTag = 123456; // optional
+        t.networkFee = 13; // in drops, optional
         t.setMemo("{ \"data\": \"value 123\", \"price\": 1.23 }", "json");  // optional
 
         // Example sending with Ethereum using MetaMask
@@ -52,6 +63,7 @@ public class Main {
         private double amount;
         private String ccy;
         private String ccyIssuer;
+        public String sender;
         public String destination;
         public Integer destinationTag;
         private String memo;
