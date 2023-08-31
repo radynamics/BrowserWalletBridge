@@ -2,6 +2,7 @@
 This Java project lets a user sign cryptocurrency transactions with a browser wallet extension from a desktop software. It starts an embedded HttpServer and start users browser to send requests to a browser wallet extension.
 
 Currently implemented Wallets are:
+- [XRPL] [Crossmark](https://crossmark.io)
 - [XRPL] [GemWallet](https://gemwallet.app)
 - [Ethereum] [MetaMask](https://metamask.io)
 
