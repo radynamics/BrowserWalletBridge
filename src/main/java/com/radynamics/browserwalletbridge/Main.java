@@ -8,6 +8,8 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException, BridgeException {
+        var networkId = Utils.xahauTestnet;
+        var nativeToken = Utils.nativeToken(networkId).orElseThrow();
         // Example sending XRP using GemWallet
         /*var walletApi = new GemWallet();
         var t = new Transaction();
@@ -21,12 +23,19 @@ public class Main {
         // Example sending XRP using Crossmark
         var walletApi = new Crossmark();
         var t = new Transaction();
-        t.sender = "rwYb1M4hZcSG6tcAuhvgEwSpsiACKv6BG8";
-        t.setAmount(1.23, "XRP");
+        t.networkId = networkId;
+        if ("XRP".equals(nativeToken)) {
+            t.sender = "rwYb1M4hZcSG6tcAuhvgEwSpsiACKv6BG8";
+            t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
+        } else if ("XAH".equals(nativeToken)) {
+            t.sender = "rf8DUYPvBvkgnfVQQCeYw1XA8JUaNs1vrA";
+            t.destination = "rP5FhoougnnAE1r9QWp38mN21EDsRqXfpW";
+        }
+        t.setAmount(1.23, nativeToken);
         //t.setAmount(1.23, "USD", "r4u18ao5NTd8nQo9LMEpkbmpRwsJ4vZeua");
-        t.destination = "rLWQskMM8EoPxaLsmuQxE5rYeP4uX7dhym";
         t.destinationTag = 123456; // optional
-        t.networkFee = 13; // in drops, optional
+        // Hint: Fees vary on Xahau. Omit fee and let Wallet estimate an appropriate value.
+        //t.networkFee = 13; // in drops, optional
         t.setMemo("{ \"data\": \"value 123\", \"price\": 1.23 }", "json");  // optional
 
         // Example sending with Ethereum using MetaMask
@@ -69,6 +78,7 @@ public class Main {
         private String memo;
         private String memoType;
         public Integer networkFee;
+        public Integer networkId;
 
         public boolean hasMemo() {
             return memo != null && memo.length() > 0;

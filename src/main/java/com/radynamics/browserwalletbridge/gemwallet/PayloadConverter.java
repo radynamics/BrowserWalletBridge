@@ -1,12 +1,13 @@
 package com.radynamics.browserwalletbridge.gemwallet;
 
+import com.radynamics.browserwalletbridge.BridgeException;
 import com.radynamics.browserwalletbridge.Main;
 import com.radynamics.browserwalletbridge.Utils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class PayloadConverter implements com.radynamics.browserwalletbridge.PayloadConverter {
-    public JSONObject toJson(Main.Transaction t) {
+    public JSONObject toJson(Main.Transaction t) throws BridgeException {
         if (t == null) throw new IllegalArgumentException("Parameter 't' cannot be null");
 
         var json = new JSONObject();
@@ -26,6 +27,10 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         }
         if (t.hasMemo()) {
             json.put("memos", toJsonMemo(t));
+        }
+
+        if (t.networkId != null) {
+            throw new BridgeException("GemWallet doens't support param NetworkID,");
         }
 
         return json;

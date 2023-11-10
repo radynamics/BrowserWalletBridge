@@ -12,7 +12,7 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         var json = new JSONObject();
         json.put("TransactionType", "Payment");
         json.put("Account", t.sender);
-        if (t.getCcy().equals("XRP")) {
+        if (t.getCcy().equals(Utils.nativeToken(t.networkId).orElseThrow())) {
             json.put("Amount", String.valueOf(Utils.xrplXrpToDrops(t.getAmount())));
         } else {
             var amt = new JSONObject();
@@ -33,6 +33,8 @@ public class PayloadConverter implements com.radynamics.browserwalletbridge.Payl
         if (t.hasMemo()) {
             json.put("Memos", toJsonMemo(t));
         }
+
+        Utils.networkId(t.networkId).ifPresent(networkID -> json.put("NetworkID", networkID));
 
         return json;
     }
